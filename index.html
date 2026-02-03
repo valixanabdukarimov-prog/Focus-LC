@@ -1,133 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>English Placement Test</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-body {
-  font-family: Arial, sans-serif;
-  background: #f4f6f8;
-  margin: 0;
-  padding: 0;
-}
-.container {
-  max-width: 700px;
-  background: #fff;
-  margin: 30px auto;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-h1 {
-  text-align: center;
-}
-.question {
-  margin-bottom: 20px;
-}
-button {
-  background: #2c7be5;
-  color: white;
-  border: none;
-  padding: 12px;
-  width: 100%;
-  font-size: 16px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-button:hover {
-  background: #1a5fc4;
-}
-.result {
-  text-align: center;
-  font-size: 18px;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level Test</title>
+  
+  <!-- CSS goes inside <style> -->
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
+    .question { margin-bottom: 20px; background: #fff; padding: 15px; border-radius: 8px; }
+    .question p { font-weight: bold; }
+    .options label { display: block; margin: 5px 0; }
+    button { padding: 10px 20px; font-size: 16px; border: none; border-radius: 5px; background: #4CAF50; color: white; cursor: pointer; }
+    button:hover { background: #45a049; }
+    .result { margin-top: 20px; font-size: 18px; font-weight: bold; }
+  </style>
 </head>
-
 <body>
 
-<div class="container" id="start">
-  <h1>English Placement Test</h1>
-  <p>Enter your name to begin:</p>
-  <input type="text" id="studentName" style="width:100%; padding:10px;">
-  <br><br>
-  <button onclick="startTest()">Start Test</button>
-</div>
+<h1>Level Test</h1>
 
-<div class="container" id="test" style="display:none;"></div>
+<!-- Form where questions appear -->
+<form id="quizForm"></form>
 
-<div class="container" id="result" style="display:none;"></div>
+<!-- Button to submit -->
+<button onclick="checkAnswers()">Submit</button>
 
+<!-- Where score and level will appear -->
+<div class="result" id="result"></div>
+
+<!-- JavaScript goes before </body> -->
 <script>
-const questions = [
-  {q:"She is ___ a teacher.", a:["am","is","are","be"], c:1},
-  {q:"Which word means 'cheap'?", a:["big","not expensive","dangerous","far"], c:1},
-  {q:"I usually ___ coffee in the morning.", a:["drink","drinks","drank","drinking"], c:0},
-  {q:"What is the opposite of early?", a:["fast","late","soon","quick"], c:1},
-  {q:"I have lived here ___ five years.", a:["since","during","for","from"], c:2},
+  // 1️⃣ Questions array (your questions go here)
+  const questions = [
+    {q:"Q1. She ___ a teacher.", options:["am","is","are","be"], answer:"is"},
+    {q:"Q2. We ___ from Uzbekistan.", options:["is","am","are","be"], answer:"are"},
+    // ... all other questions up to Q50
+  ];
 
-  {q:"Which word means 'to begin'?", a:["finish","start","stop","close"], c:1},
-  {q:"The movie was very ___ . I liked it.", a:["boring","enjoyable","bored","boringly"], c:1},
-  {q:"Have you ever ___ sushi?", a:["eat","ate","eaten","eating"], c:2},
-  {q:"Which word is similar to angry?", a:["excited","relaxed","upset","pleased"], c:2},
-  {q:"She is ___ for the job.", a:["famous","suitable","typical","comfortable"], c:1},
+  // 2️⃣ Generate questions
+  const form = document.getElementById("quizForm");
+  questions.forEach((item, index) => {
+    const div = document.createElement("div");
+    div.className = "question";
+    div.innerHTML = `<p>${item.q}</p>` +
+      item.options.map(opt =>
+        `<label><input type="radio" name="q${index}" value="${opt}"> ${opt}</label>`
+      ).join("");
+    form.appendChild(div);
+  });
 
-  {q:"Which word means very important?", a:["ordinary","crucial","minor","simple"], c:1},
-  {q:"He was ___ of lying.", a:["blamed","accused","warned","allowed"], c:1},
-  {q:"The company plans to ___ abroad.", a:["extend","expand","increase","develop"], c:1},
-  {q:"The instructions caused confusion.", a:["true","false","maybe","unknown"], c:0},
-  {q:"Which word means refuse firmly?", a:["avoid","deny","reject","ignore"], c:2}
-];
-
-let score = 0;
-
-function startTest(){
-  const name = document.getElementById("studentName").value;
-  if(name.trim() === "") return alert("Enter your name");
-  document.getElementById("start").style.display = "none";
-  document.getElementById("test").style.display = "block";
-  loadQuestions();
-}
-
-function loadQuestions(){
-  const testDiv = document.getElementById("test");
-  testDiv.innerHTML = "<h2>Answer all questions</h2>";
-  questions.forEach((q, i) => {
-    let html = `<div class="question"><p>${i+1}. ${q.q}</p>`;
-    q.a.forEach((opt, idx)=>{
-      html += `<label><input type="radio" name="q${i}" value="${idx}"> ${opt}</label><br>`;
+  // 3️⃣ Check answers and show level
+  function checkAnswers() {
+    let score = 0;
+    questions.forEach((item, index) => {
+      const selected = document.querySelector(`input[name=q${index}]:checked`);
+      if (selected && selected.value === item.answer) score++;
     });
-    html += "</div>";
-    testDiv.innerHTML += html;
-  });
-  testDiv.innerHTML += `<button onclick="finishTest()">Finish Test</button>`;
-}
 
-function finishTest(){
-  score = 0;
-  questions.forEach((q,i)=>{
-    const ans = document.querySelector(`input[name="q${i}"]:checked`);
-    if(ans && parseInt(ans.value) === q.c) score++;
-  });
+    let level = "";
+    if (score <= 15) level = "Elementary";
+    else if (score <= 30) level = "Pre-Intermediate";
+    else level = "Intermediate → Upper-Intermediate";
 
-  const percent = Math.round((score / questions.length) * 100);
-  let level = "Beginner";
-
-  if(percent >= 90) level = "Upper-Intermediate";
-  else if(percent >= 75) level = "Intermediate";
-  else if(percent >= 55) level = "Pre-Intermediate";
-  else if(percent >= 35) level = "Elementary";
-
-  document.getElementById("test").style.display = "none";
-  document.getElementById("result").style.display = "block";
-  document.getElementById("result").innerHTML = `
-    <div class="result">
-      <h2>Your Result</h2>
-      <p>Score: ${percent}%</p>
-      <p><strong>Level: ${level}</strong></p>
-    </div>`;
-}
+    document.getElementById("result").innerText =
+      `You got ${score} out of ${questions.length} correct. Level: ${level}`;
+  }
 </script>
 
 </body>
