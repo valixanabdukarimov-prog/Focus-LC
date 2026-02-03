@@ -1,104 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Level Test</title>
-  <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
-    .question { margin-bottom: 20px; background: #fff; padding: 15px; border-radius: 8px; }
-    .question p { font-weight: bold; }
-    .options label { display: block; margin: 5px 0; }
-    button { padding: 10px 20px; font-size: 16px; border: none; border-radius: 5px; background: #4CAF50; color: white; cursor: pointer; }
-    button:hover { background: #45a049; }
-    .result { margin-top: 20px; font-size: 18px; font-weight: bold; }
-  </style>
+<meta charset="UTF-8">
+<title>English Placement Test</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  margin: 0;
+  padding: 0;
+}
+.container {
+  max-width: 700px;
+  background: #fff;
+  margin: 30px auto;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+h1, h2 {
+  text-align: center;
+}
+.question {
+  margin-bottom: 20px;
+}
+button {
+  background: #2c7be5;
+  color: white;
+  border: none;
+  padding: 12px;
+  width: 100%;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+button:hover {
+  background: #1a5fc4;
+}
+.result {
+  text-align: center;
+  font-size: 18px;
+}
+</style>
 </head>
+
 <body>
 
-<h1>Level Test</h1>
+<div class="container" id="start">
+  <h1>English Placement Test</h1>
+  <p>Enter your name to begin:</p>
+  <input type="text" id="studentName" style="width:100%; padding:10px;">
+  <br><br>
+  <button onclick="startTest()">Start Test</button>
+</div>
 
-<form id="quizForm">
-  <!-- Questions will be inserted here by JavaScript -->
-</form>
+<div class="container" id="test" style="display:none;"></div>
 
-<button onclick="checkAnswers()">Submit</button>
-<div class="result" id="result"></div>
+<div class="container" id="result" style="display:none;"></div>
 
 <script>
 const questions = [
-  {q:"Q1. She ___ a teacher.", options:["am","is","are","be"], answer:"is"},
-  {q:"Q2. We ___ from Uzbekistan.", options:["is","am","are","be"], answer:"are"},
-  {q:"Q3. I usually ___ coffee in the morning.", options:["drink","drinks","drank","drinking"], answer:"drink"},
-  {q:"Q4. There ___ a book on the table.", options:["are","were","is","have"], answer:"is"},
-  {q:"Q5. He doesn’t ___ meat.", options:["eats","eating","eat","ate"], answer:"eat"},
-  {q:"Q6. ___ you speak English?", options:["Do","Are","Is","Does"], answer:"Do"},
-  {q:"Q7. She goes to work ___ bus.", options:["on","by","with","in"], answer:"by"},
-  {q:"Q8. I have lived here ___ five years.", options:["since","during","for","from"], answer:"for"},
-  {q:"Q9. This bag is ___ than that one.", options:["heavy","more heavy","heavier","heaviest"], answer:"heavier"},
-  {q:"Q10. We ___ TV when he arrived.", options:["watch","watched","were watching","are watching"], answer:"were watching"},
-  {q:"Q11. There isn’t ___ milk left.", options:["many","few","much","a few"], answer:"much"},
-  {q:"Q12. She’s ___ honest person.", options:["a","an","the","—"], answer:"an"},
-  {q:"Q13. My brother is good ___ math.", options:["in","on","at","for"], answer:"at"},
-  {q:"Q14. I didn’t ___ him yesterday.", options:["saw","see","seen","seeing"], answer:"see"},
-  {q:"Q15. Let’s meet ___ Monday.", options:["at","in","on","by"], answer:"on"},
-  {q:"Q16. If it ___ tomorrow, we’ll stay home.", options:["rain","rains","rained","will rain"], answer:"rains"},
-  {q:"Q17. She’s not as ___ as her sister.", options:["tall","taller","tallest","more tall"], answer:"tall"},
-  {q:"Q18. I was tired ___ I went to bed early.", options:["but","because","so","although"], answer:"so"},
-  {q:"Q19. Have you ever ___ sushi?", options:["eat","ate","eaten","eating"], answer:"eaten"},
-  {q:"Q20. He asked me where I ___ from.", options:["am","was","were","be"], answer:"was"},
-  {q:"Q21. She works ___ than before.", options:["more hard","harder","hardest","hard"], answer:"harder"},
-  {q:"Q22. This is the ___ movie I’ve ever seen.", options:["more interesting","interesting","most interesting","very interesting"], answer:"most interesting"},
-  {q:"Q23. I’m looking forward to ___ you.", options:["see","seeing","seen","saw"], answer:"seeing"},
-  {q:"Q24. He apologized ___ being late.", options:["for","about","of","to"], answer:"for"},
-  {q:"Q25. We didn’t have ___ time to finish.", options:["enough","too","very","much enough"], answer:"enough"},
-  {q:"Q26. She ___ have forgotten the meeting.", options:["must","can’t","might","should"], answer:"might"},
-  {q:"Q27. The phone rang while I ___ dinner.", options:["cook","was cooking","cooked","am cooking"], answer:"was cooking"},
-  {q:"Q28. I prefer tea ___ coffee.", options:["than","to","from","over"], answer:"to"},
-  {q:"Q29. He speaks English quite ___.", options:["good","well","better","best"], answer:"well"},
-  {q:"Q30. She didn’t go out ___ the rain.", options:["because","because of","although","despite of"], answer:"because of"},
-  {q:"Q31. If I ___ more money, I would travel more.", options:["have","had","will have","would have"], answer:"had"},
-  {q:"Q32. The project must ___ by Friday.", options:["finish","finished","be finished","finishing"], answer:"be finished"},
-  {q:"Q33. He’s the person ___ idea changed everything.", options:["which","who","whose","whom"], answer:"whose"},
-  {q:"Q34. Not only ___ late, but he also forgot the keys.", options:["he was","was he","he is","is he"], answer:"was he"},
-  {q:"Q35. She denied ___ the documents.", options:["steal","to steal","stealing","stole"], answer:"stealing"},
-  {q:"Q36. Hardly had we arrived ___ it started raining.", options:["than","when","then","while"], answer:"when"},
-  {q:"Q37. The more you practice, ___ you become.", options:["better","the better","the best","better than"], answer:"the better"},
-  {q:"Q38. He suggested that she ___ earlier.", options:["leaves","leave","left","will leave"], answer:"leave"},
-  {q:"Q39. She spoke ___ quietly that no one heard her.", options:["very","too","so","such"], answer:"so"},
-  {q:"Q40. I’d rather you ___ me earlier.", options:["tell","told","have told","telling"], answer:"told"},
-  {q:"Q41. The report, ___ was sent yesterday, contains errors.", options:["that","who","which","where"], answer:"which"},
-  {q:"Q42. He acted ___ he knew nothing.", options:["because","although","as if","unless"], answer:"as if"},
-  {q:"Q43. No sooner had she finished ___ the phone rang.", options:["than","when","then","while"], answer:"than"},
-  {q:"Q44. This is the town ___ I grew up.", options:["which","that","where","when"], answer:"where"},
-  {q:"Q45. He objected ___ treated unfairly.", options:["to being","to be","being","for being"], answer:"to being"},
-  {q:"Q46. She has her car ___.", options:["repair","repairing","repaired","to repair"], answer:"repaired"},
-  {q:"Q47. I wish I ___ more attention at school.", options:["pay","paid","have paid","would pay"], answer:"paid"},
-  {q:"Q48. The instructions were ___ complicated to follow.", options:["very","too","so","such"], answer:"too"},
-  {q:"Q49. He’s accustomed to ___ under pressure.", options:["work","working","worked","works"], answer:"working"},
-  {q:"Q50. Little ___ that this decision would change everything.", options:["they knew","did they know","they did know","knew they"], answer:"did they know"},
+  {q:"Q1. She ___ a teacher.", a:["am","is","are","be"], c:1},
+  {q:"Q2. We ___ from Uzbekistan.", a:["is","am","are","be"], c:2},
+  {q:"Q3. I usually ___ coffee in the morning.", a:["drink","drinks","drank","drinking"], c:0},
+  {q:"Q4. There ___ a book on the table.", a:["are","were","is","have"], c:2},
+  {q:"Q5. He doesn’t ___ meat.", a:["eats","eating","eat","ate"], c:2},
+  {q:"Q6. ___ you speak English?", a:["Do","Are","Is","Does"], c:0},
+  {q:"Q7. She goes to work ___ bus.", a:["on","by","with","in"], c:1},
+  {q:"Q8. I have lived here ___ five years.", a:["since","during","for","from"], c:2},
+  {q:"Q9. This bag is ___ than that one.", a:["heavy","more heavy","heavier","heaviest"], c:2},
+  {q:"Q10. We ___ TV when he arrived.", a:["watch","watched","were watching","are watching"], c:2},
+  {q:"Q11. There isn’t ___ milk left.", a:["many","few","much","a few"], c:2},
+  {q:"Q12. She’s ___ honest person.", a:["a","an","the","—"], c:1},
+  {q:"Q13. My brother is good ___ math.", a:["in","on","at","for"], c:2},
+  {q:"Q14. I didn’t ___ him yesterday.", a:["saw","see","seen","seeing"], c:1},
+  {q:"Q15. Let’s meet ___ Monday.", a:["at","in","on","by"], c:2},
+  {q:"Q16. If it ___ tomorrow, we’ll stay home.", a:["rain","rains","rained","will rain"], c:1},
+  {q:"Q17. She’s not as ___ as her sister.", a:["tall","taller","tallest","more tall"], c:0},
+  {q:"Q18. I was tired ___ I went to bed early.", a:["but","because","so","although"], c:2},
+  {q:"Q19. Have you ever ___ sushi?", a:["eat","ate","eaten","eating"], c:2},
+  {q:"Q20. He asked me where I ___ from.", a:["am","was","were","be"], c:1},
+  {q:"Q21. She works ___ than before.", a:["more hard","harder","hardest","hard"], c:1},
+  {q:"Q22. This is the ___ movie I’ve ever seen.", a:["more interesting","interesting","most interesting","very interesting"], c:2},
+  {q:"Q23. I’m looking forward to ___ you.", a:["see","seeing","seen","saw"], c:1},
+  {q:"Q24. He apologized ___ being late.", a:["for","about","of","to"], c:0},
+  {q:"Q25. We didn’t have ___ time to finish.", a:["enough","too","very","much enough"], c:0},
+  {q:"Q26. She ___ have forgotten the meeting.", a:["must","can’t","might","should"], c:2},
+  {q:"Q27. The phone rang while I ___ dinner.", a:["cook","was cooking","cooked","am cooking"], c:1},
+  {q:"Q28. I prefer tea ___ coffee.", a:["than","to","from","over"], c:1},
+  {q:"Q29. He speaks English quite ___.", a:["good","well","better","best"], c:1},
+  {q:"Q30. She didn’t go out ___ the rain.", a:["because","because of","although","despite of"], c:1},
+  {q:"Q31. If I ___ more money, I would travel more.", a:["have","had","will have","would have"], c:1},
+  {q:"Q32. The project must ___ by Friday.", a:["finish","finished","be finished","finishing"], c:2},
+  {q:"Q33. He’s the person ___ idea changed everything.", a:["which","who","whose","whom"], c:2},
+  {q:"Q34. Not only ___ late, but he also forgot the keys.", a:["he was","was he","he is","is he"], c:1},
+  {q:"Q35. She denied ___ the documents.", a:["steal","to steal","stealing","stole"], c:2},
+  {q:"Q36. Hardly had we arrived ___ it started raining.", a:["than","when","then","while"], c:1},
+  {q:"Q37. The more you practice, ___ you become.", a:["better","the better","the best","better than"], c:1},
+  {q:"Q38. He suggested that she ___ earlier.", a:["leaves","leave","left","will leave"], c:1},
+  {q:"Q39. She spoke ___ quietly that no one heard her.", a:["very","too","so","such"], c:2},
+  {q:"Q40. I’d rather you ___ me earlier.", a:["tell","told","have told","telling"], c:1},
+  {q:"Q41. The report, ___ was sent yesterday, contains errors.", a:["that","who","which","where"], c:2},
+  {q:"Q42. He acted ___ he knew nothing.", a:["because","although","as if","unless"], c:2},
+  {q:"Q43. No sooner had she finished ___ the phone rang.", a:["than","when","then","while"], c:0},
+  {q:"Q44. This is the town ___ I grew up.", a:["which","that","where","when"], c:2},
+  {q:"Q45. He objected ___ treated unfairly.", a:["to being","to be","being","for being"], c:0},
+  {q:"Q46. She has her car ___.", a:["repair","repairing","repaired","to repair"], c:2},
+  {q:"Q47. I wish I ___ more attention at school.", a:["pay","paid","have paid","would pay"], c:1},
+  {q:"Q48. The instructions were ___ complicated to follow.", a:["very","too","so","such"], c:1},
+  {q:"Q49. He’s accustomed to ___ under pressure.", a:["work","working","worked","works"], c:1},
+  {q:"Q50. Little ___ that this decision would change everything.", a:["they knew","did they know","they did know","knew they"], c:1}
 ];
 
-// Generate questions in the form
-const form = document.getElementById("quizForm");
-questions.forEach((item, index) => {
-  const div = document.createElement("div");
-  div.className = "question";
-  div.innerHTML = `<p>${item.q}</p>` + 
-    item.options.map(opt => 
-      `<label><input type="radio" name="q${index}" value="${opt}"> ${opt}</label>`
-    ).join("");
-  form.appendChild(div);
-});
+let score = 0;
 
-// Check answers
-function checkAnswers() {
-  let score = 0;
-  questions.forEach((item, index) => {
-    const selected = document.querySelector(`input[name=q${index}]:checked`);
-    if (selected && selected.value === item.answer) score++;
+function startTest(){
+  const name = document.getElementById("studentName").value;
+  if(name.trim() === "") return alert("Enter your name");
+  document.getElementById("start").style.display = "none";
+  document.getElementById("test").style.display = "block";
+  loadQuestions();
+}
+
+function loadQuestions(){
+  const testDiv = document.getElementById("test");
+  testDiv.innerHTML = "<h2>Answer all questions</h2>";
+  questions.forEach((q, i)=>{
+    let html = `<div class="question"><p>${i+1}. ${q.q}</p>`;
+    q.a.forEach((opt, idx)=>{
+      html += `<label><input type="radio" name="q${i}" value="${idx}"> ${opt}</label><br>`;
+    });
+    html += "</div>";
+    testDiv.innerHTML += html;
   });
-  document.getElementById("result").innerText = `You got ${score} out of ${questions.length} correct.`;
+  testDiv.innerHTML += `<button onclick="finishTest()">Finish Test</button>`;
+}
+
+function finishTest(){
+  score = 0;
+  questions.forEach((q,i)=>{
+    const ans = document.querySelector(`input[name="q${i}"]:checked`);
+    if(ans && parseInt(ans.value) === q.c) score++;
+  });
+
+  const percent = Math.round((score / questions.length) * 100);
+  let level = "Beginner";
+
+  if(percent >= 90) level = "Upper-Intermediate";
+  else if(percent >= 75) level = "Intermediate";
+  else if(percent >= 55) level = "Pre-Intermediate";
+  else if(percent >= 35) level = "Elementary";
+
+  document.getElementById("test").style.display = "none";
+  document.getElementById("result").style.display = "block";
+  document.getElementById("result").innerHTML = `
+    <div class="result">
+      <h2>Your Result</h2>
+      <p>Score: ${percent}%</p>
+      <p><strong>Level: ${level}</strong></p>
+    </div>`;
 }
 </script>
 
