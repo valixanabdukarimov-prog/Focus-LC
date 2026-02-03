@@ -125,17 +125,20 @@ function startTest(){
 
 function loadQuestions(){
   const testDiv = document.getElementById("test");
-  testDiv.innerHTML = "<h2>Answer all questions</h2>";
+  let html = "<h2>Answer all questions</h2>";  // start with header
+
   questions.forEach((q, i)=>{
-    let html = `<div class="question"><p>${i+1}. ${q.q}</p>`;
+    html += `<div class="question"><p>${i+1}. ${q.q}</p>`;
     q.a.forEach((opt, idx)=>{
       html += `<label><input type="radio" name="q${i}" value="${idx}"> ${opt}</label><br>`;
     });
     html += "</div>";
-    testDiv.innerHTML += html;
   });
-  testDiv.innerHTML += `<button onclick="finishTest()">Finish Test</button>`;
+
+  html += `<button onclick="finishTest()">Finish Test</button>`;
+  testDiv.innerHTML = html;  // insert all at once
 }
+
 
 function finishTest(){
   score = 0;
