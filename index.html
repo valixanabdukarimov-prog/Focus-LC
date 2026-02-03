@@ -48,12 +48,20 @@ button:hover {
 <body>
 
 <div class="container" id="start">
-  <h1>English Placement Test</h1>
+  <!-- Logo -->
+  <div style="text-align:center; margin-bottom:15px;">
+    <img src="logo.png" alt="LC Logo" style="max-width:150px;">
+  </div>
+
+  <!-- LC Name -->
+  <h1 style="margin-bottom:10px;">Focus Learning Center</h1>
+
   <p>Enter your name to begin:</p>
   <input type="text" id="studentName" style="width:100%; padding:10px;">
   <br><br>
   <button onclick="startTest()">Start Test</button>
 </div>
+
 
 <div class="container" id="test" style="display:none;"></div>
 
